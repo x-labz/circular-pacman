@@ -1,0 +1,6 @@
+{
+    "terminal.integrated.env.windows": {
+        "PATH": "C:\\Users\\damja\\.platformio\\penv\\Scripts;C:\\Users\\damja\\.platformio\\penv;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Git\\cmd;C:\\Program Files (x86)\\Pico Technology\\PicoScope6\\;C:\\Users\\damja\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\damja\\AppData\\Roaming\\npm;C:\\Users\\damja\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Git\\cmd;C:\\Program Files (x86)\\Pico Technology\\PicoScope6\\;C:\\Users\\damja\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\damja\\AppData\\Roaming\\npm;C:\\Users\\damja\\AppData\\Local\\Programs\\Microsoft VS Code\\bin",
+        "PLATFORMIO_CALLER": "vscode"
+    }
+}
