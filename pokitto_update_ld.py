@@ -1,4 +1,4 @@
-Import("env")
+import("env")
 
 import requests
 import os

@@ -9,10 +9,7 @@
 #ifndef PACMAN_H_
 #define PACMAN_H_
 
-#include "Pokitto.h"
 #include "fixmath.h"
-
-
 #include "buttons.h"
 #include "pacman_text_bitmaps.h"
 
