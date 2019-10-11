@@ -82,7 +82,7 @@ int main ()
                 {
                     state.game_state = GAME_RUN;
                     image_p = NULL;
-                    setOSC(&osc1,1,3,0,0,1,46,246,160,39,1,59,0,0,13,0,0) ;
+                    // setOSC(&osc1,1,3,0,0,1,46,246,160,39,1,59,0,0,13,0,0) ;
                 }
                 break;
             case GAME_RUN:
@@ -443,7 +443,7 @@ void calc_state(state_type* state, button_type* buttons)
             state->isGapRotating = 60;
             state->rotatingLevel = ((mygame.getTime() | buttons->timestamp) >> 1) & 0x03;
             if (state->rotatingLevel > 2) state->rotatingLevel = 0;
-            setOSC(&osc1,1,3,0,0,1,20 + 3*(2- state->rotatingLevel),246,15,91,101,54,0,0,0,0,1) ;
+            // setOSC(&osc1,1,3,0,0,1,20 + 3*(2- state->rotatingLevel),246,15,91,101,54,0,0,0,0,1) ;
         }
         if (state->isGapRotating > 0)
         {
@@ -489,7 +489,7 @@ void calc_state(state_type* state, button_type* buttons)
             state->points[i].isEaten = true;
             state->points_count--;
 
-            setOSC(&osc2,1,1,0,0,1,47,215,249,221,1,8,3,13,0,0,1) ;
+            // setOSC(&osc2,1,1,0,0,1,47,215,249,221,1,8,3,13,0,0,1) ;
         }
         for (int8_t g = 0; g != 4; g++)
         {
