@@ -1,5 +1,6 @@
 
 #include "Pokitto.h" // include Pokitto library
+//#include "PokittoButtons.h"
 
 #include "Synth.h"
 #include "pacman.h"
@@ -30,6 +31,12 @@ const uint16_t pacman_palette[] =
     0
 };
 
+void static inline drawpixel( uint8_t * buffer,  uint8_t x, uint8_t y, uint8_t color)
+{
+    uint16_t address = 110 * y  + (x/2);
+    buffer[address] = !(bool)(x % 2) ?  (buffer[address] & 0x0f | (color << 4)) : (buffer[address] & 0xf0 | color) ;
+}
+
 void draw_text(uint8_t x0, uint8_t y0, const bitmap_type* bitmap) ;
 void drawline(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color);
 void arc(uint16_t x0, uint16_t y0, uint16_t r, fix16_t start, fix16_t end, uint8_t color, coord * result_start, coord *result_end);
@@ -45,14 +52,11 @@ void get_buttons( button_type * state );
 
 Pokitto::Core mygame; //create Pokitto application instance
 Pokitto::Sound snd;
-//sfxcookie sfx;
 
 int main ()
 {
     const bitmap_type* image_p;
 
-    //sfx.begin("BSFXedit",sfx);
-    //sfx.init() ;
     mygame.begin(); // start the application
     mygame.display.load565Palette(pacman_palette) ;
     mygame.display.setColor(1,0); // set foreground and background colors from palette
@@ -78,11 +82,12 @@ int main ()
             {
             case GAME_GET_READY:
                 image_p = &(pacman_texts_array[0]);
-                if (!buttons_state.button_up && buttons_state.button_up_1)
+                //if (!buttons_state.button_up && buttons_state.button_up_1)
+                if (!buttons_state.button_a && buttons_state.button_a_1)
                 {
                     state.game_state = GAME_RUN;
                     image_p = NULL;
-                    // setOSC(&osc1,1,3,0,0,1,46,246,160,39,1,59,0,0,13,0,0) ;
+                    setOSC(&osc1,1,3,0,0,1,46,127,160,39,1,59,0,0,13,1,0) ;
                 }
                 break;
             case GAME_RUN:
@@ -90,27 +95,29 @@ int main ()
                 break;
             case GAME_GAME_OVER:
                 image_p = &pacman_texts_array[1];
-                if (!buttons_state.button_up && buttons_state.button_up_1)
+                if (!buttons_state.button_a && buttons_state.button_a_1)
+
                 {
                     state_init(&state);
                 }
-                if (!buttons_state.button_down && buttons_state.button_down_1)
-                {
+                //if (!buttons_state.button_down && buttons_state.button_down_1)
+                //{
                     //return false;
-                }
+                //}
                 break;
             case GAME_YOU_WIN:
                 image_p = &pacman_texts_array[2];
-                if (!buttons_state.button_up && buttons_state.button_up_1)
+                //if (!buttons_state.button_up && buttons_state.button_up_1)
+                if (!buttons_state.button_a && buttons_state.button_a_1)
                 {
-                    if (!buttons_state.button_up && buttons_state.button_up_1)
-                    {
+                    //if (!buttons_state.button_up && buttons_state.button_up_1)
+                    //{
                         state_init(&state);
-                    }
-                    if (!buttons_state.button_down && buttons_state.button_down_1)
-                    {
-                        return false;
-                    }
+                    //}
+                    //if (!buttons_state.button_down && buttons_state.button_down_1)
+                    //{
+                    //    return false;
+                    //}
                 }
                 break;
             }
@@ -141,11 +148,13 @@ void get_buttons( button_type * state )
     state->button_down_1 = state->button_down ;
     state->button_left_1 = state->button_left ;
     state->button_right_1 = state->button_right ;
+    state->button_a_1 = state->button_a;
 
     state->button_up = !mygame.buttons.upBtn() ;
     state->button_down = !mygame.buttons.downBtn() ;
     state->button_left = !mygame.buttons.leftBtn() ;
     state->button_right = !mygame.buttons.rightBtn() ;
+    state->button_a = !mygame.buttons.aBtn();
 }
 
 void state_init(state_type* state)
@@ -443,7 +452,7 @@ void calc_state(state_type* state, button_type* buttons)
             state->isGapRotating = 60;
             state->rotatingLevel = ((mygame.getTime() | buttons->timestamp) >> 1) & 0x03;
             if (state->rotatingLevel > 2) state->rotatingLevel = 0;
-            // setOSC(&osc1,1,3,0,0,1,20 + 3*(2- state->rotatingLevel),246,15,91,101,54,0,0,0,0,1) ;
+            setOSC(&osc1,1,3,0,0,1,30 + 3*(2- state->rotatingLevel),200,90,55,40,18,0,0,0,1,0) ;
         }
         if (state->isGapRotating > 0)
         {
@@ -489,7 +498,7 @@ void calc_state(state_type* state, button_type* buttons)
             state->points[i].isEaten = true;
             state->points_count--;
 
-            // setOSC(&osc2,1,1,0,0,1,47,215,249,221,1,8,3,13,0,0,1) ;
+             setOSC(&osc2,1,1,0,0,1,47,127,249,221,1,8,3,13,0,1,0) ;
         }
         for (int8_t g = 0; g != 4; g++)
         {
@@ -513,7 +522,7 @@ void calc_state(state_type* state, button_type* buttons)
     if (collision)
     {
         state->game_state = GAME_GAME_OVER;
-        setOSC(&osc1,1,2,0,1,1,25,246,28,14,173,6,-157,-257,0,0,0) ;
+        setOSC(&osc1,1,2,0,1,1,25,127,28,14,173,6,-157,-257,0,1,0) ;
     }
 
     // check win
@@ -547,7 +556,8 @@ void draw_pacman( state_type* s)
         if (!s->points[i].isHidden && !s->points[i].isEaten)
         {
             //image[WIDTH * s->points[i].y + s->points[i].x] = 4;
-            mygame.display.drawPixel( OFFSET_X + s->points[i].x, OFFSET_Y + s->points[i].y,4 );
+            //mygame.display.drawPixel( OFFSET_X + s->points[i].x, OFFSET_Y + s->points[i].y,4 );
+            drawpixel( mygame.display.screenbuffer, OFFSET_X + s->points[i].x, OFFSET_Y + s->points[i].y,2);
         }
     }
 
@@ -583,7 +593,8 @@ void circle(uint16_t x0, uint16_t y0, uint16_t r,uint8_t color)
         int16_t y = fix16_to_int(fix16_mul(fix16_from_int(r), fix16_sin(a)));
 
         //fb[WIDTH * (y + y0) + x + x0] = color;
-        mygame.display.drawPixel( OFFSET_X + x+x0, OFFSET_Y + y+y0,color );
+        //mygame.display.drawPixel( OFFSET_X + x+x0, OFFSET_Y + y+y0,color );
+        drawpixel( mygame.display.screenbuffer,OFFSET_X + x+x0, OFFSET_Y + y+y0,color);
     }
 }
 
@@ -623,8 +634,11 @@ void ghost(uint16_t x0, uint16_t y0, fix16_t angle, uint8_t color)
 
 //	image[WIDTH * points_y[10] + points_x[10]] = color;
 //	image[WIDTH * points_y[11] + points_x[11]] = color;
-    mygame.display.drawPixel( OFFSET_X + points_x[10], OFFSET_Y +points_y[10],color );
-    mygame.display.drawPixel( OFFSET_X + points_x[11], OFFSET_Y + points_y[11],color);
+    //mygame.display.drawPixel( OFFSET_X + points_x[10], OFFSET_Y +points_y[10],color );
+    //mygame.display.drawPixel( OFFSET_X + points_x[11], OFFSET_Y + points_y[11],color);
+    drawpixel( mygame.display.screenbuffer, OFFSET_X + points_x[10], OFFSET_Y +points_y[10],color);
+    drawpixel( mygame.display.screenbuffer, OFFSET_X + points_x[11], OFFSET_Y + points_y[11],color);
+
 }
 
 void arc(uint16_t x0, uint16_t y0, uint16_t r, fix16_t start, fix16_t end, uint8_t color, coord * result_start, coord *result_end)
@@ -689,7 +703,8 @@ void drawline(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color)
     for (int16_t i = 0; i < dx; i++)
     {
 //		fb[WIDTH * y + x] = color;
-        mygame.display.drawPixel( OFFSET_X +  x,OFFSET_Y +y,color );
+        //mygame.display.drawPixel( OFFSET_X +  x,OFFSET_Y +y,color );
+        drawpixel( mygame.display.screenbuffer,OFFSET_X +  x,OFFSET_Y +y,color);
         while (D >= 0)
         {
             D = D - 2 * dx;
@@ -712,7 +727,8 @@ void draw_text(uint8_t x0, uint8_t y0, const bitmap_type* bitmap)
             if (pix != 0xff)
             {
                 //image[(y0 + y)*WIDTH + x0 + x] = pix;
-                mygame.display.drawPixel(OFFSET_X + x0+x,OFFSET_Y +y0+y,pix) ;
+                //mygame.display.drawPixel(OFFSET_X + x0+x,OFFSET_Y +y0+y,pix) ;
+                drawpixel( mygame.display.screenbuffer,OFFSET_X + x0+x,OFFSET_Y +y0+y,pix);
             }
         }
     }

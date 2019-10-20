@@ -14,9 +14,9 @@
 
 #define DISABLEAVRMIN 1
 #define PROJ_MODE15 	  1    // 220x176 hires 16 color mode
-//#define PROJ_ENABLE_SOUND 1     // 0 = all sound functions disabled
-//#define PROJ_ENABLE_SYNTH 1
-//#define PROJ_AUD_FREQ 22050
+#define PROJ_ENABLE_SOUND 1     // 0 = all sound functions disabled
+#define PROJ_ENABLE_SYNTH 1
+#define PROJ_AUD_FREQ 8000
 //#define PROJ_FPS 30
 //#define PROJ_SHOW_FPS_COUNTER
 

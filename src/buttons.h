@@ -20,6 +20,8 @@ typedef struct  {
 	bool button_down_1;
 	bool button_left_1;
 	bool button_right_1;
+	bool button_a;
+	bool button_a_1;
 	uint32_t timestamp;
 	}  button_type;
 
